@@ -1,13 +1,13 @@
-const players = {
-  player1: { name: "", value: 1 },
-  player2: { name: "", value: 2 },
-};
+// const players = {
+//   player1: { name: "", value: 1 },
+//   player2: { name: "", value: 2 },
+// };
 
-const initiateBoard = () => {
-  for (let index = 0; index < board.length; index++) {
-    board[index] = 0;
-  }
-};
+// const initiateBoard = () => {
+//   for (let index = 0; index < board.length; index++) {
+//     board[index] = 0;
+//   }
+// };
 
 const GameBoard = (() => {
   const board = ["", "", "", "", "", "", "", "", ""];
@@ -30,3 +30,13 @@ const GameBoard = (() => {
 
   return { getBoard, placeMark, resetBoard };
 })();
+
+const Player = (name, marker) => {
+  const value = marker === "X" ? 1 : 2;
+
+  const getName = () => name;
+  const getMarker = () => marker;
+  const getValue = () => value;
+
+  return { getName, getMarker, getValue };
+};
