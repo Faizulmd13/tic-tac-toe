@@ -5,3 +5,38 @@
   padding: 0;
   box-sizing: border-box;
 }
+
+main {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap: 12px;
+}
+
+.board {
+  display: grid;
+  grid-template-columns: repeat(3, 100px);
+  grid-template-rows: repeat(3, 100px);
+  gap: 2px;
+  background: black;
+  border: 2px black solid;
+}
+
+.cell {
+  background: white;
+  width: 100px;
+  height: 100px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.cell-btn {
+  width: 100%;
+  height: 100%;
+  border: none;
+  background: transparent; /* so it doesn’t mess up borders */
+  font-size: 2rem;
+  cursor: pointer;
+}
