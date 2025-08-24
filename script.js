@@ -82,19 +82,30 @@ const GameController = (() => {
 
   const playRound = (index) => {
     if (GameBoard.placeMark(index, currentPlayer.getMarker())) {
+      const marker = currentPlayer.getMarker();
       const winner = GameBoard.checkWinner();
       if (winner) {
         const winningPlayer =
           winner === playerOne.getMarker() ? playerOne : playerTwo;
-        return { status: "win", message: `${winningPlayer.getName()} wins!` };
+        return {
+          status: "win",
+          marker,
+          player: winningPlayer,
+          message: `${winningPlayer.getName()} wins!`,
+        };
       }
 
       if (GameBoard.isTie()) {
-        return { status: "tie", message: "It's a tie!" };
+        return {
+          status: "tie",
+          marker,
+          player: currentPlayer,
+          message: "It's a tie!",
+        };
       }
 
       switchTurn();
-      return { status: "next", player: getCurrentPlayer().getName() };
+      return { status: "next", marker, player: getCurrentPlayer() };
     }
     return { status: "invalid", message: "Cell already taken!" };
   };
@@ -103,3 +114,55 @@ const GameController = (() => {
 
   return { playRound, getCurrentPlayer, reset: GameBoard.resetBoard };
 })();
+
+const DisplayController = () => {
+  const cellButtons = document.querySelectorAll(".cell-btn");
+  const message = document.querySelector("#message");
+  const reset = document.querySelector("#reset");
+  const start = document.querySelector("#start");
+
+  // Attach listeners once
+  cellButtons.forEach((button) => {
+    button.addEventListener("click", () => {
+      const playerMove = GameController.playRound(button.dataset.index);
+
+      switch (playerMove.status) {
+        case "invalid":
+          message.textContent = playerMove.message; // "Cell already taken!"
+          break;
+
+        case "win":
+          button.textContent = playerMove.marker;
+          button.disabled = true;
+          message.textContent = playerMove.message; // "X wins!"
+          cellButtons.forEach((btn) => (btn.disabled = true)); // disable all
+          break;
+
+        case "tie":
+          button.textContent = playerMove.marker;
+          button.disabled = true;
+          message.textContent = playerMove.message; // "It's a tie!"
+          cellButtons.forEach((btn) => (btn.disabled = true));
+          break;
+
+        case "next":
+          button.textContent = playerMove.marker;
+          button.disabled = true;
+          message.textContent = `${playerMove.player.getName()}'s Move`;
+          break;
+      }
+    });
+  });
+
+  // Reset game
+  reset.addEventListener("click", () => {
+    GameBoard.resetBoard();
+    cellButtons.forEach((btn) => {
+      btn.textContent = "";
+      btn.disabled = false;
+    });
+    message.textContent = "Game reset.";
+  });
+};
+
+DisplayController();
