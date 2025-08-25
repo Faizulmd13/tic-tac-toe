@@ -6,7 +6,32 @@
   box-sizing: border-box;
 }
 
+body {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+}
+
+.menu {
+  display: flex;
+  flex-direction: column;
+}
+
+.create-player {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+  padding: 10px;
+}
+
+.create-player #preview {
+  display: none;
+  margin: 0 auto;
+}
+
 main {
+  flex: 1;
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -39,4 +64,5 @@ main {
   background: transparent; /* so it doesn’t mess up borders */
   font-size: 2rem;
   cursor: pointer;
+  color: black;
 }
