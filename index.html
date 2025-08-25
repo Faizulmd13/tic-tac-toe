@@ -8,7 +8,39 @@
     <script src="script.js" defer></script>
   </head>
   <body>
-    <header></header>
+    <!-- <header></header> -->
+    <aside class="menu">
+      <div class="select-player">
+        <div class="player1">
+          <label>Choose Player X</label>
+          <select class="select-player"></select>
+        </div>
+        <div class="player2">
+          <label> Choose Player O:</label>
+          <select class="select-player"></select>
+        </div>
+      </div>
+      <div>
+        <form class="create-player">
+          <h1>Create Player:</h1>
+          <input
+            type="text"
+            placeholder="Player Name"
+            required
+            class="player-name"
+          />
+          <label for="avatar">Choose a Avatar :</label>
+          <select id="avatar">
+            <option value="">-- Select --</option>
+            <option value="./GIFS/Goku.gif">Goku</option>
+            <option value="./GIFS/Vegeta.gif">Vegeta</option>
+            <option value="./GIFS/Luffy.gif">Luffy</option>
+          </select>
+          <img id="preview" alt="Selected Image" width="100px" height="100px" />
+          <button id="create-btn">Create Player</button>
+        </form>
+      </div>
+    </aside>
     <main>
       <h1>Tic Tac Toe</h1>
       <div class="board">
@@ -41,9 +73,9 @@
         </div>
       </div>
       <p id="message"></p>
-      <button id="reset">Reset</button>
+      <button id="start">Start</button>
     </main>
 
-    <footer></footer>
+    <!-- <footer></footer> -->
   </body>
 </html>
