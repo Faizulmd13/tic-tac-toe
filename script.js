@@ -161,6 +161,12 @@ const GameController = (() => {
       if (winner) {
         const winningPlayer =
           winner === playerOne.getMarker() ? playerOne : playerTwo;
+        winningPlayer.recordWin();
+
+        const losingPlayer =
+          winningPlayer === playerOne ? playerTwo : playerOne;
+        losingPlayer.recordLoss();
+
         return {
           status: "win",
           marker,
@@ -198,10 +204,11 @@ const GameController = (() => {
 const DisplayController = (() => {
   const cellButtons = document.querySelectorAll(".cell-btn");
   const message = document.querySelector("#message");
-  const reset = document.querySelector("#reset");
   const startBtn = document.querySelector("#start");
   const player1Dropdown = document.querySelector(".player1 select");
   const player2Dropdown = document.querySelector(".player2 select");
+  const leftPanel = document.querySelector(".player-panel.left");
+  const rightPanel = document.querySelector(".player-panel.right");
 
   message.textContent = "Press Start to begin";
 
@@ -227,6 +234,14 @@ const DisplayController = (() => {
           button.textContent = playerMove.marker;
           button.disabled = true;
           message.textContent = `${playerMove.player.getName()}'s Move`;
+
+          if (playerMove.player.getMarker() === "X") {
+            leftPanel.classList.add("active");
+            rightPanel.classList.remove("active");
+          } else {
+            rightPanel.classList.add("active");
+            leftPanel.classList.remove("active");
+          }
           break;
       }
     });
@@ -242,12 +257,35 @@ const DisplayController = (() => {
     let p2 = players[p2Index] || Player("Player2", "avatar2.gif");
 
     GameController.setPlayers(p1, p2);
-    GameBoard.resetBoard();
 
+    const leftName = leftPanel.querySelector(".player-name");
+    const leftAvatar = leftPanel.querySelector(".avatar");
+    const leftStats = leftPanel.querySelector(".stats");
+
+    const rightName = rightPanel.querySelector(".player-name");
+    const rightAvatar = rightPanel.querySelector(".avatar");
+    const rightStats = rightPanel.querySelector(".stats");
+
+    leftName.textContent = p1.getName();
+    leftAvatar.src = p1.getAvatar();
+    leftStats.textContent = `Wins: ${p1.getStats().wins} | Losses: ${
+      p1.getStats().losses
+    } | Streak: ${p1.getStats().streak}`;
+
+    rightName.textContent = p2.getName();
+    rightAvatar.src = p2.getAvatar();
+    rightStats.textContent = `Wins: ${p2.getStats().wins} | Losses: ${
+      p2.getStats().losses
+    } | Streak: ${p2.getStats().streak}`;
+
+    GameBoard.resetBoard();
     cellButtons.forEach((btn) => {
       btn.textContent = "";
       btn.disabled = false;
     });
+
+    leftPanel.classList.add("active");
+    rightPanel.classList.remove("active");
 
     message.textContent = `${p1.getName()} (X) starts the game!`;
   });
