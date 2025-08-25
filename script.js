@@ -1,14 +1,69 @@
-// const players = {
-//   player1: { name: "", value: 1 },
-//   player2: { name: "", value: 2 },
-// };
+// ====================== Player UI Controller ======================
+const PlayerUIController = (() => {
+  const players = [];
 
-// const initiateBoard = () => {
-//   for (let index = 0; index < board.length; index++) {
-//     board[index] = 0;
-//   }
-// };
+  const createForm = document.querySelector(".create-player");
+  const nameInput = document.querySelector(".player-name");
+  const avatarInput = document.querySelector("#avatar");
+  const preview = document.querySelector("#preview");
+  const selectPlayerDropdowns = document.querySelectorAll(
+    "aside .select-player select"
+  );
 
+  createForm.addEventListener("submit", (e) => {
+    e.preventDefault();
+
+    const name = nameInput.value.trim();
+    const avatar = avatarInput.value;
+
+    if (!name || !avatar) return; // don’t allow empty fields
+
+    const newPlayer = Player(name, avatar);
+    players.push(newPlayer);
+
+    // Clear the form
+    nameInput.value = "";
+    avatarInput.value = "";
+    preview.src = "";
+    preview.style.display = "none";
+
+    // Update dropdowns
+    updateDropdowns();
+  });
+
+  function updateDropdowns() {
+    selectPlayerDropdowns.forEach((dropdown) => {
+      // Clear old options
+      dropdown.innerHTML = "<option value=''>-- Choose Player --</option>";
+
+      // Add all players
+      players.forEach((player, index) => {
+        const option = document.createElement("option");
+        option.value = index; // keep index as value
+        option.textContent = player.getName();
+        dropdown.appendChild(option);
+      });
+    });
+  }
+
+  // Preview avatar image when selected
+  const select = document.getElementById("avatar");
+  select.addEventListener("change", function () {
+    const selectedValue = this.value;
+    if (selectedValue) {
+      preview.src = selectedValue;
+      preview.style.display = "block";
+    } else {
+      preview.style.display = "none";
+    }
+  });
+
+  return {
+    getPlayers: () => [...players], // expose copy if needed
+  };
+})();
+
+// ====================== Game Board Module ======================
 const GameBoard = (() => {
   const board = ["", "", "", "", "", "", "", "", ""];
 
@@ -55,26 +110,45 @@ const GameBoard = (() => {
   return { getBoard, placeMark, resetBoard, checkWinner, isTie };
 })();
 
-const Player = (name, marker) => {
-  const getName = () => name;
-  const getMarker = () => marker;
+// ====================== Player Factory ======================
+const Player = (name, avatar) => {
+  let wins = 0;
+  let losses = 0;
+  let streak = 0;
+  let marker = null; // assigned later
 
-  return { getName, getMarker };
+  return {
+    getName: () => name,
+    getAvatar: () => avatar,
+    getMarker: () => marker,
+    setMarker: (value) => {
+      marker = value;
+    },
+    getStats: () => ({ wins, losses, streak }),
+    recordWin: () => {
+      wins++;
+      streak++;
+    },
+    recordLoss: () => {
+      losses++;
+      streak = 0;
+    },
+  };
 };
 
+// ====================== Game Controller ======================
 const GameController = (() => {
-  const playerOne = Player("Faizul", "X");
-  const playerTwo = Player("Kishore", "O");
+  let playerOne = null;
+  let playerTwo = null;
+  let currentPlayer = null;
 
-  //   const firstPlayer = () => {
-  //     if (playerOne.getMarker() === "X") {
-  //       return playerOne;
-  //     } else {
-  //       return playerTwo;
-  //     }
-  //   };
-
-  let currentPlayer = playerOne;
+  const setPlayers = (p1, p2) => {
+    playerOne = p1;
+    playerTwo = p2;
+    playerOne.setMarker("X");
+    playerTwo.setMarker("O");
+    currentPlayer = playerOne;
+  };
 
   const switchTurn = () => {
     currentPlayer = currentPlayer === playerOne ? playerTwo : playerOne;
@@ -112,36 +186,40 @@ const GameController = (() => {
 
   const getCurrentPlayer = () => currentPlayer;
 
-  return { playRound, getCurrentPlayer, reset: GameBoard.resetBoard };
+  return {
+    playRound,
+    getCurrentPlayer,
+    reset: GameBoard.resetBoard,
+    setPlayers,
+  };
 })();
 
-const DisplayController = () => {
+// ====================== Display Controller ======================
+const DisplayController = (() => {
   const cellButtons = document.querySelectorAll(".cell-btn");
   const message = document.querySelector("#message");
   const reset = document.querySelector("#reset");
-  const start = document.querySelector("#start");
+  const startBtn = document.querySelector("#start");
+  const player1Dropdown = document.querySelector(".player1 select");
+  const player2Dropdown = document.querySelector(".player2 select");
 
-  // Attach listeners once
+  message.textContent = "Press Start to begin";
+
+  // Attach listeners once for board cells
   cellButtons.forEach((button) => {
     button.addEventListener("click", () => {
       const playerMove = GameController.playRound(button.dataset.index);
 
       switch (playerMove.status) {
         case "invalid":
-          message.textContent = playerMove.message; // "Cell already taken!"
+          message.textContent = playerMove.message;
           break;
 
         case "win":
-          button.textContent = playerMove.marker;
-          button.disabled = true;
-          message.textContent = playerMove.message; // "X wins!"
-          cellButtons.forEach((btn) => (btn.disabled = true)); // disable all
-          break;
-
         case "tie":
           button.textContent = playerMove.marker;
           button.disabled = true;
-          message.textContent = playerMove.message; // "It's a tie!"
+          message.textContent = playerMove.message;
           cellButtons.forEach((btn) => (btn.disabled = true));
           break;
 
@@ -154,15 +232,25 @@ const DisplayController = () => {
     });
   });
 
-  // Reset game
-  reset.addEventListener("click", () => {
+  // Start new game
+  startBtn.addEventListener("click", () => {
+    const players = PlayerUIController.getPlayers();
+    const p1Index = parseInt(player1Dropdown.value, 10);
+    const p2Index = parseInt(player2Dropdown.value, 10);
+
+    let p1 = players[p1Index] || Player("Player1", "avatar1.gif");
+    let p2 = players[p2Index] || Player("Player2", "avatar2.gif");
+
+    GameController.setPlayers(p1, p2);
     GameBoard.resetBoard();
+
     cellButtons.forEach((btn) => {
       btn.textContent = "";
       btn.disabled = false;
     });
-    message.textContent = "Game reset.";
+
+    message.textContent = `${p1.getName()} (X) starts the game!`;
   });
-};
+})();
 
 DisplayController();
