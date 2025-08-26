@@ -8,102 +8,125 @@
     <script src="script.js" defer></script>
   </head>
   <body>
-    <header>
-      <h1>Tic Tac Toe</h1>
-      <button>New Player</button>
+    <header class="app-header">
+      <h1 class="app-title">Tic Tac Toe</h1>
+      <button class="btn btn-new-player">New Player</button>
     </header>
-    <aside class="menu">
-      <div class="select-player">
-        <div class="player1">
-          <label>Choose Player X</label>
-          <select class="select-player"></select>
-        </div>
-        <div class="player2">
-          <label> Choose Player O:</label>
-          <select class="select-player"></select>
-        </div>
-      </div>
-      <div>
-        <form class="create-player">
-          <h1>Create Player:</h1>
-          <input
-            type="text"
-            placeholder="Player Name"
-            required
-            class="player-name"
-          />
-          <label for="avatar">Choose a Avatar :</label>
-          <select id="avatar">
-            <option value="">-- Select --</option>
-            <option value="./GIFS/Goku.gif">Goku</option>
-            <option value="./GIFS/Vegeta.gif">Vegeta</option>
-            <option value="./GIFS/Luffy.gif">Luffy</option>
-          </select>
-          <img id="preview" alt="Selected Image" width="100px" height="100px" />
-          <button id="create-btn">Create Player</button>
-        </form>
-      </div>
-    </aside>
+
     <main>
-      <div class="grid-container">
-        <div class="board">
-          <div class="cell">
-            <button class="cell-btn" data-index="0"></button>
-          </div>
-          <div class="cell">
-            <button class="cell-btn" data-index="1"></button>
-          </div>
-          <div class="cell">
-            <button class="cell-btn" data-index="2"></button>
-          </div>
-          <div class="cell">
-            <button class="cell-btn" data-index="3"></button>
-          </div>
-          <div class="cell">
-            <button class="cell-btn" data-index="4"></button>
-          </div>
-          <div class="cell">
-            <button class="cell-btn" data-index="5"></button>
-          </div>
-          <div class="cell">
-            <button class="cell-btn" data-index="6"></button>
-          </div>
-          <div class="cell">
-            <button class="cell-btn" data-index="7"></button>
-          </div>
-          <div class="cell">
-            <button class="cell-btn" data-index="8"></button>
-          </div>
-        </div>
-        <p id="message"></p>
-        <button id="start">Start</button>
-        <div class="player-container">
-          <div class="player-panel left">
-            <div class="avatar-container">
-              <img class="avatar" src="" alt="Player X Avatar" />
+      <div class="game-wrap">
+        <!-- LEFT: Board -->
+        <section class="board-section">
+          <div class="game-board" aria-label="Tic tac toe board">
+            <div class="board-cell">
+              <button class="cell-button" data-index="0"></button>
             </div>
-            <div class="stats-container">
-              <h2 class="player-name">Player X</h2>
-              <p class="win">Wins: 0</p>
-              <p class="loss">Losses: 0</p>
-              <p class="streak">Streak: 0</p>
+            <div class="board-cell">
+              <button class="cell-button" data-index="1"></button>
+            </div>
+            <div class="board-cell">
+              <button class="cell-button" data-index="2"></button>
+            </div>
+            <div class="board-cell">
+              <button class="cell-button" data-index="3"></button>
+            </div>
+            <div class="board-cell">
+              <button class="cell-button" data-index="4"></button>
+            </div>
+            <div class="board-cell">
+              <button class="cell-button" data-index="5"></button>
+            </div>
+            <div class="board-cell">
+              <button class="cell-button" data-index="6"></button>
+            </div>
+            <div class="board-cell">
+              <button class="cell-button" data-index="7"></button>
+            </div>
+            <div class="board-cell">
+              <button class="cell-button" data-index="8"></button>
             </div>
           </div>
-          <div class="player-panel right">
-            <div class="avatar-container">
-              <img class="avatar" src="" alt="Player O Avatar" />
+        </section>
+
+        <!-- RIGHT: Controls + Players -->
+        <aside class="sidebar">
+          <p id="gameMessage" class="game-message">Press Start to begin</p>
+          <button id="btnStart" class="btn btn-start">Start</button>
+
+          <div class="player-selects">
+            <div class="select-block">
+              <label for="player-x">Player X:</label>
+              <select id="player-x" class="select-player select-player-x">
+                <option value="" disabled selected>Select player</option>
+              </select>
             </div>
-            <div class="stats-container">
-              <h2 class="player-name">Player O</h2>
-              <p class="win">Wins: 0</p>
-              <p class="loss">Losses: 0</p>
-              <p class="streak">Streak: 0</p>
+            <div class="select-block">
+              <label for="player-o">Player O:</label>
+              <select id="player-o" class="select-player select-player-o">
+                <option value="" disabled selected>Select player</option>
+              </select>
             </div>
           </div>
-        </div>
+
+          <div class="players">
+            <div class="player-card left">
+              <div class="avatar-box">
+                <img class="player-avatar" src="" alt="Player X Avatar" />
+              </div>
+              <div class="stats">
+                <h2 class="player-name">Player X</h2>
+                <p class="stat stat-wins">Wins: 0</p>
+                <p class="stat stat-losses">Losses: 0</p>
+                <p class="stat stat-streak">Streak: 0</p>
+              </div>
+            </div>
+
+            <div class="player-card right">
+              <div class="avatar-box">
+                <img class="player-avatar" src="" alt="Player O Avatar" />
+              </div>
+              <div class="stats">
+                <h2 class="player-name">Player O</h2>
+                <p class="stat stat-wins">Wins: 0</p>
+                <p class="stat stat-losses">Losses: 0</p>
+                <p class="stat stat-streak">Streak: 0</p>
+              </div>
+            </div>
+          </div>
+        </aside>
       </div>
     </main>
 
-    <!-- <footer></footer> -->
+    <div class="overlay"></div>
+
+    <div class="modal" role="dialog" aria-modal="true" aria-hidden="true">
+      <form class="form-create-player">
+        <h2>Create Player</h2>
+        <input
+          type="text"
+          placeholder="Player Name"
+          required
+          class="input-player-name"
+        />
+        <label for="selectAvatar">Choose an avatar</label>
+        <select id="selectAvatar" class="input-avatar-select">
+          <option value="">-- Select --</option>
+          <option value="./GIFS/Goku.gif">Goku</option>
+          <option value="./GIFS/Vegeta.gif">Vegeta</option>
+          <option value="./GIFS/Luffy.gif">Luffy</option>
+        </select>
+
+        <img
+          id="avatarPreview"
+          alt="Selected Avatar Preview"
+          width="100"
+          height="100"
+        />
+
+        <button id="btnCreatePlayer" type="submit" class="btn btn-primary">
+          Create Player
+        </button>
+      </form>
+    </div>
   </body>
 </html>
