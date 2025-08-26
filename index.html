@@ -8,7 +8,10 @@
     <script src="script.js" defer></script>
   </head>
   <body>
-    <!-- <header></header> -->
+    <header>
+      <h1>Tic Tac Toe</h1>
+      <button>New Player</button>
+    </header>
     <aside class="menu">
       <div class="select-player">
         <div class="player1">
@@ -42,13 +45,7 @@
       </div>
     </aside>
     <main>
-      <div class="player-panel left">
-        <img class="avatar" src="" alt="Player X Avatar" />
-        <h2 class="player-name">Player X</h2>
-        <p class="stats">Wins: 0 | Losses: 0 | Streak: 0</p>
-      </div>
       <div class="grid-container">
-        <h1>Tic Tac Toe</h1>
         <div class="board">
           <div class="cell">
             <button class="cell-btn" data-index="0"></button>
@@ -80,11 +77,30 @@
         </div>
         <p id="message"></p>
         <button id="start">Start</button>
-      </div>
-      <div class="player-panel right">
-        <img class="avatar" src="" alt="Player O Avatar" />
-        <h2 class="player-name">Player O</h2>
-        <p class="stats">Wins: 0 | Losses: 0 | Streak: 0</p>
+        <div class="player-container">
+          <div class="player-panel left">
+            <div class="avatar-container">
+              <img class="avatar" src="" alt="Player X Avatar" />
+            </div>
+            <div class="stats-container">
+              <h2 class="player-name">Player X</h2>
+              <p class="win">Wins: 0</p>
+              <p class="loss">Losses: 0</p>
+              <p class="streak">Streak: 0</p>
+            </div>
+          </div>
+          <div class="player-panel right">
+            <div class="avatar-container">
+              <img class="avatar" src="" alt="Player O Avatar" />
+            </div>
+            <div class="stats-container">
+              <h2 class="player-name">Player O</h2>
+              <p class="win">Wins: 0</p>
+              <p class="loss">Losses: 0</p>
+              <p class="streak">Streak: 0</p>
+            </div>
+          </div>
+        </div>
       </div>
     </main>
 

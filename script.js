@@ -16,7 +16,7 @@ const PlayerUIController = (() => {
     const name = nameInput.value.trim();
     const avatar = avatarInput.value;
 
-    if (!name || !avatar) return; // don’t allow empty fields
+    if (!name || !avatar) return;
 
     const newPlayer = Player(name, avatar);
     players.push(newPlayer);
@@ -55,6 +55,7 @@ const PlayerUIController = (() => {
       preview.style.display = "block";
     } else {
       preview.style.display = "none";
+      preview.src = "";
     }
   });
 
@@ -260,23 +261,27 @@ const DisplayController = (() => {
 
     const leftName = leftPanel.querySelector(".player-name");
     const leftAvatar = leftPanel.querySelector(".avatar");
-    const leftStats = leftPanel.querySelector(".stats");
+    const leftWins = leftPanel.querySelector(".win");
+    const leftLoss = leftPanel.querySelector(".loss");
+    const leftStreak = leftPanel.querySelector(".streak");
 
     const rightName = rightPanel.querySelector(".player-name");
     const rightAvatar = rightPanel.querySelector(".avatar");
-    const rightStats = rightPanel.querySelector(".stats");
+    const rightWins = rightPanel.querySelector(".win");
+    const rightLoss = rightPanel.querySelector(".loss");
+    const rightStreak = rightPanel.querySelector(".streak");
 
     leftName.textContent = p1.getName();
     leftAvatar.src = p1.getAvatar();
-    leftStats.textContent = `Wins: ${p1.getStats().wins} | Losses: ${
-      p1.getStats().losses
-    } | Streak: ${p1.getStats().streak}`;
+    leftWins.textContent = `Wins: ${p1.getStats().wins}`;
+    leftLoss.textContent = `Losses: ${p1.getStats().losses}`;
+    leftStreak.textContent = `Streak: ${p1.getStats().streak}`;
 
     rightName.textContent = p2.getName();
     rightAvatar.src = p2.getAvatar();
-    rightStats.textContent = `Wins: ${p2.getStats().wins} | Losses: ${
-      p2.getStats().losses
-    } | Streak: ${p2.getStats().streak}`;
+    rightWins.textContent = `Wins: ${p2.getStats().wins}`;
+    rightLoss.textContent = `Losses: ${p2.getStats().losses}`;
+    rightStreak.textContent = `Streak: ${p2.getStats().streak}`;
 
     GameBoard.resetBoard();
     cellButtons.forEach((btn) => {
