@@ -24,17 +24,23 @@ body {
   height: 100%;
 }
 
+html {
+  min-height: 100%;
+  background: linear-gradient(180deg, var(--bg) 0%, #060816 100%);
+  background-attachment: fixed;
+}
+
 body {
   min-height: 100vh;
   font-family: Inter, system-ui, -apple-system, "Segoe UI", Roboto,
     "Helvetica Neue", Arial;
-  background: linear-gradient(180deg, var(--bg), #060816 80%);
   color: var(--text);
   display: flex;
   flex-direction: column;
   align-items: center;
   gap: 20px;
   padding: 24px;
+  background: transparent;
 }
 
 /* ========== HEADER ========== */
@@ -421,4 +427,107 @@ label {
 
 .overlay.active {
   display: block;
+}
+
+/* ========== MEDIA QUERIES ========== */
+
+/* Tablets (≤ 768px) */
+@media (max-width: 768px) {
+  .game-wrap {
+    grid-template-columns: 1fr; /* Stack board & sidebar */
+    gap: 20px;
+  }
+
+  .game-board {
+    width: 300px;
+    height: 300px;
+  }
+
+  .board-cell {
+    width: 85px;
+    height: 85px;
+  }
+
+  .cell-button {
+    font-size: 2rem;
+  }
+
+  .sidebar {
+    align-items: center;
+    padding-bottom: 1.25rem;
+  }
+}
+
+/* Phones (≤ 480px) */
+@media (max-width: 480px) {
+  body {
+    padding: 12px;
+    gap: 14px;
+  }
+
+  /* keep header inline but smaller */
+  .app-header {
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+    gap: 8px;
+  }
+
+  .app-title {
+    font-size: 1.2rem;
+  }
+
+  .app-nav {
+    gap: 6px;
+  }
+
+  .app-link {
+    font-size: 0.85rem;
+    padding: 4px 6px;
+  }
+
+  /* shrink board */
+  .game-board {
+    width: 260px;
+    height: 260px;
+    gap: 6px;
+  }
+
+  .board-cell {
+    width: 75px;
+    height: 75px;
+  }
+
+  .cell-button {
+    font-size: 1.6rem;
+  }
+
+  .player-card {
+    flex-direction: row;
+    text-align: left;
+    gap: 8px;
+  }
+
+  .player-card .avatar-box {
+    width: 70px;
+    height: 70px;
+  }
+
+  .player-card .player-name {
+    font-size: 1rem;
+  }
+
+  .sidebar .btn,
+  .controls .btn {
+    min-width: unset;
+    width: 100%;
+    padding: 6px 10px;
+    font-size: 0.9rem;
+  }
+
+  .app-header .btn {
+    width: auto;
+    padding: 6px 12px;
+    font-size: 0.85rem;
+  }
 }
